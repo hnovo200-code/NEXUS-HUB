@@ -1,0 +1,30 @@
+-- Tabela contendo os IDs dos jogos e os links dos scripts correspondentes
+local supportedGames = {
+    [84556640895285] = "https://raw.githubusercontent.com/hnovo200-code/NEXUS-HUB/refs/heads/main/NEXUA_HUB/GAMES/ARENA_DEAGLE",
+    -- Adicione mais jogos aqui no formato: [ID_DO_JOGO] = "LINK_DO_RAW_DO_GITHUB",
+    -- [1234567890] = "https://raw.githubusercontent.com/seu-usuario/seu-repositorio/main/outro-script",
+}
+
+-- Pega o ID do jogo atual
+local currentGameId = game.PlaceId
+
+-- Verifica se o ID do jogo está na nossa tabela
+local scriptUrl = supportedGames[currentGameId]
+
+if scriptUrl then
+    print("[Game Hub] Jogo suportado encontrado! Carregando script...")
+    
+    -- Tenta carregar o script com segurança
+    local success, err = pcall(function()
+        loadstring(game:HttpGet(scriptUrl))()
+    end)
+    
+    if not success then
+        warn("[Game Hub] Erro ao carregar o script: " .. tostring(err))
+    end
+else
+    -- Caso o jogo não esteja na lista
+    print("[Game Hub] Este jogo não é suportado por este hub (ID: " .. tostring(currentGameId) + ")")
+    
+    -- Opcional: Você pode colocar uma notificação na tela do jogo avisando que não é suportado
+end
